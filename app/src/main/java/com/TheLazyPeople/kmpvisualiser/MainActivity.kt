@@ -3,11 +3,16 @@ package com.TheLazyPeople.kmpvisualiser
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
+import android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE
 import android.text.style.BackgroundColorSpan
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,38 +29,59 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun KMPSearch(pat: String, txt: String) {
-        val str = SpannableString(sourceString)
-        val M = pat.length
-        val N = txt.length
+        GlobalScope.launch{
+            val str = SpannableString(sourceString)
+            val M = pat.length
+            val N = txt.length
 
-        // create lps[] that will hold the longest
-        // prefix suffix values for pattern
-        val lps = IntArray(M)
-        var j = 0 // index for pat[]
+            // create lps[] that will hold the longest
+            // prefix suffix values for pattern
+            val lps = IntArray(M)
+            var j = 0 // index for pat[]
 
-        // Preprocess the pattern (calculate lps[]
-        // array)
-        computeLPSArray(pat, M, lps)
-        var i = 0 // index for txt[]
-        while (i < N) {
-            if (pat[j] == txt[i]) {
-                j++
-                i++
+            // Preprocess the pattern (calculate lps[]
+            // array)
+            computeLPSArray(pat, M, lps)
+            var i = 0 // index for txt[]
+            var c=-1
+            while (i < N) {
+                if (pat[j] == txt[i]) {
+                    str.setSpan(BackgroundColorSpan(Color.RED), i, i+1, 0)
+                    delay(500)
+                    j++
+                    i++
+                }
+                if (j == M) {
+                    // print("Found pattern " + "at index " + (i - j))
+                    //Toast.makeText(this, "FOUND AT INDEX ${i - j}", Toast.LENGTH_SHORT).show()
+                   str.setSpan(BackgroundColorSpan(Color.WHITE), c+1, i-j, 0)
+                    str.setSpan(BackgroundColorSpan(Color.YELLOW), i - j, i - j + targetString.length, 0)
+                    delay(500)
+                    c=i-j+targetString.length-1;
+                    j = lps[j - 1]
+
+
+                }
+                else if (i < N && pat[j] != txt[i]) {
+                    // Do not match lps[0..lps[j-1]] characters,
+                    // they will match anyway
+                    if (j != 0) {
+                        //str.setSpan(BackgroundColorSpan(Color.WHITE), i, i+1, 0)
+                        //delay(500)
+                        j = lps[j - 1]
+
+                    }
+                    else {
+                        str.setSpan(BackgroundColorSpan(Color.RED), i, i+1, 0)
+                        delay(500)
+                        i = i + 1
+                    }
+                }
+                tvResultString.text = str
             }
-            if (j == M) {
-               // print("Found pattern " + "at index " + (i - j))
-                Toast.makeText(this,"FOUND AT INDEX ${i-j}",Toast.LENGTH_SHORT).show()
-
-                str.setSpan(BackgroundColorSpan(Color.YELLOW), i-j, i-j+targetString.length, 0)
-
-                j = lps[j - 1]
-            } else if (i < N && pat[j] != txt[i]) {
-                // Do not match lps[0..lps[j-1]] characters,
-                // they will match anyway
-                if (j != 0) j = lps[j - 1] else i = i + 1
-            }
+            str.setSpan(BackgroundColorSpan(Color.WHITE), c+1, N, 0)
+            tvResultString.text=str
         }
-        tvResultString.text=str
     }
 
     fun computeLPSArray(pat: String, M: Int, lps: IntArray) {
