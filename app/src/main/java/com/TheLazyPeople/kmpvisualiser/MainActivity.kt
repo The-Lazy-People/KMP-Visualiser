@@ -1,9 +1,14 @@
 package com.TheLazyPeople.kmpvisualiser
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.BackgroundColorSpan
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
     var sourceString:String=""
@@ -11,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         btnSearch.setOnClickListener {
             sourceString=etSourceString.text.toString()
             targetString=etTargetString.text.toString()
@@ -19,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun KMPSearch(pat: String, txt: String) {
+        val str = SpannableString(sourceString)
         val M = pat.length
         val N = txt.length
 
@@ -38,7 +44,10 @@ class MainActivity : AppCompatActivity() {
             }
             if (j == M) {
                // print("Found pattern " + "at index " + (i - j))
-                Toast.makeText(this,"FOUND AT INDEX ${i-j}",Toast.LENGTH_LONG).show()
+                Toast.makeText(this,"FOUND AT INDEX ${i-j}",Toast.LENGTH_SHORT).show()
+
+                str.setSpan(BackgroundColorSpan(Color.YELLOW), i-j, i-j+targetString.length, 0)
+
                 j = lps[j - 1]
             } else if (i < N && pat[j] != txt[i]) {
                 // Do not match lps[0..lps[j-1]] characters,
@@ -46,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                 if (j != 0) j = lps[j - 1] else i = i + 1
             }
         }
+        tvResultString.text=str
     }
 
     fun computeLPSArray(pat: String, M: Int, lps: IntArray) {

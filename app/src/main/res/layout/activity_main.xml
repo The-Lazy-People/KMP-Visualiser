@@ -6,18 +6,41 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical">
-    <EditText
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:hint="SOURCE STRING"
-        android:id="@+id/etSourceString"/>
-    <EditText
+        android:scrollbars="none">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+            <EditText
+                android:id="@+id/etSourceString"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="SOURCE STRING"
+                android:background="@null"/>
+        </ScrollView>
+    </HorizontalScrollView>
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:hint="TARGET STRING"
-        android:id="@+id/etTargetString"/>
+        android:scrollbars="none">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="TARGET STRING"
+                android:id="@+id/etTargetString"
+                android:background="@null"/>
+        </ScrollView>
+    </HorizontalScrollView>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
