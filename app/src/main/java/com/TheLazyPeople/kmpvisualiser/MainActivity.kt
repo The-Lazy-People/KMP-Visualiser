@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE
 import android.text.style.BackgroundColorSpan
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -24,13 +25,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         btnSearch.setOnClickListener {
             sourceString=etSourceString.text.toString()
             targetString=etTargetString.text.toString()
             tvLPSFakeResultString.text=""
             tvLPSResultString.text=""
             tvResultString.text=""
+            horizontalScrollView.visibility = View.VISIBLE
+            horizontalScrollView2.visibility = View.VISIBLE
+            textView4.visibility = View.VISIBLE
             KMPSearch(targetString, sourceString)
         }
     }
