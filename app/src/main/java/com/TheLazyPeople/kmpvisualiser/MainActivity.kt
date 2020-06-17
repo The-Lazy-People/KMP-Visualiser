@@ -57,7 +57,12 @@ class MainActivity : AppCompatActivity() {
             computeLPSArray(pat, M, lps)
             var i = 0 // index for txt[]
             var c=-1
+            horizontalScrollView.scrollTo(0,0)
+            horizontalScrollView2.scrollTo(0,0)
             while (i < N) {
+                horizontalScrollView.scrollTo(i*10,i*10)
+                horizontalScrollView2.scrollTo(i*10, i*10)
+
                 strFakeLPS=sourceString.substring(0,i-j)
                 tvLPSFakeResultString.text=strFakeLPS
                 if (pat[j] == txt[i]) {
@@ -96,6 +101,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 else if (i < N && pat[j] != txt[i]) {
+
                     strLPS.setSpan(BackgroundColorSpan(Color.WHITE), 0, targetString.length, 0)
                     // Do not match lps[0..lps[j-1]] characters,
                     // they will match anyway
@@ -115,6 +121,7 @@ class MainActivity : AppCompatActivity() {
                         //delay(500)
                     }
                     else {
+
                         str.setSpan(BackgroundColorSpan(Color.RED), i, i+1, 0)
                         strLPS.setSpan(BackgroundColorSpan(Color.RED), j, j+1, 0)
                         tvResultString.text = str
