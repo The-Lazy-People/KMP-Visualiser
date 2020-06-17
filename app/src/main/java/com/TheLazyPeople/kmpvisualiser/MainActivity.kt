@@ -27,13 +27,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         btnSearch.setOnClickListener {
+            btnSearch.isClickable=false
             sourceString=etSourceString.text.toString()
             targetString=etTargetString.text.toString()
             tvLPSFakeResultString.text=""
             tvLPSResultString.text=""
             tvResultString.text=""
             horizontalScrollView.visibility = View.VISIBLE
-            horizontalScrollView2.visibility = View.VISIBLE
+
             textView4.visibility = View.VISIBLE
             KMPSearch(targetString, sourceString)
         }
@@ -58,10 +59,10 @@ class MainActivity : AppCompatActivity() {
             var i = 0 // index for txt[]
             var c=-1
             horizontalScrollView.scrollTo(0,0)
-            horizontalScrollView2.scrollTo(0,0)
+
             while (i < N) {
-                horizontalScrollView.scrollTo(i*10,i*10)
-                horizontalScrollView2.scrollTo(i*10, i*10)
+                horizontalScrollView.scrollTo(i*15,0)
+                //horizontalScrollView2.scrollTo(i*10, i*10)
 
                 strFakeLPS=sourceString.substring(0,i-j)
                 tvLPSFakeResultString.text=strFakeLPS
@@ -143,7 +144,7 @@ class MainActivity : AppCompatActivity() {
             strLPS.setSpan(BackgroundColorSpan(Color.WHITE), 0, targetString.length, 0)
             tvResultString.text=str
             tvLPSResultString.text=strLPS
-
+            btnSearch.isClickable=true
         }
     }
 
